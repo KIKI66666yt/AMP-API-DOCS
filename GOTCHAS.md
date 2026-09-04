@@ -40,4 +40,4 @@ While logged into the panel in a browser:
 performance.getEntriesByType('resource').filter(r => r.name.includes('API/')).map(r => r.name)
 ```
 
-Lists every `/API/...` URL actually called by the UI as you click around — gives you the Module/Command name immediately. Cross-reference against [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)'s `FriendlySpec.txt`, or your own panel's `/API` docs browser, for the exact parameter names/types that call expects.
+Lists every `/API/...` URL actually called by the UI as you click around — gives you the Module/Command name immediately. Cross-reference against your own panel's `/API` docs browser (always current) for the exact parameter names/types that call expects; [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)'s `FriendlySpec.txt` can help too but check its last-commit date first — it's known to lag behind current AMP releases.

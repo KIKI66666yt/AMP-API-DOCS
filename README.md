@@ -4,13 +4,15 @@ Field notes and worked examples for [CubeCoders AMP](https://cubecoders.com/AMP)
 
 ## This is a companion, not a duplicate
 
-The definitive, auto-updated reference for AMP's raw API surface already exists and is actively maintained:
+There's a community project for AMP's raw API surface:
 
-**→ [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)** — CI-refreshed `APISpec.json` / `FriendlySpec.txt`, a `ModuleInheritance.json` mapping which plugin modules each instance type (GenericModule, Minecraft, Rust, srcds, FiveM, ADS) actually inherits, and client libraries in C#, Node, Python, Java, Go, and Rust.
+**→ [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)** — `APISpec.json` / `FriendlySpec.txt`, a `ModuleInheritance.json` mapping which plugin modules each instance type (GenericModule, Minecraft, Rust, srcds, FiveM, ADS) actually inherits, and client libraries in C#, Node, Python, Java, Go, and Rust.
 
-**Also worth knowing:** your own AMP panel serves built-in interactive API docs at `https://<your-panel>/API` (the "AMP API Browser") — no separate tooling needed to browse the live method list for your exact AMP version.
+**⚠️ Stale as of this writing:** its last commit was May 31, 2025, pinned to AMP v2.6.2.0 — several versions behind current AMP releases (v2.8.0.4+). The repo's `update_spec.yml` GitHub Actions workflow that's supposed to auto-refresh the spec on a schedule has its trigger **commented out**, so despite the README's "automagically updates" claim, it isn't actually being kept current. Still useful for the `ModuleInheritance.json` mapping and the client libraries, but **don't trust its `APISpec.json`/`FriendlySpec.txt` as current** — pull the spec live instead (see step 3 below), which always matches your exact installed AMP version.
 
-This repo doesn't re-document the method list — go to the two links above for that. What's here instead is what neither of those give you: **things you only find out by actually calling the API against a live instance** — auth gotchas that 400/401 you until you know the trick, permission-model surprises that aren't obvious from the spec, and a full worked example (Palworld) showing what a real create → inspect → manage → console workflow looks like end to end.
+**Also worth knowing:** your own AMP panel serves built-in interactive API docs at `https://<your-panel>/API` (the "AMP API Browser") — no separate tooling needed, and it's guaranteed to match your exact AMP version.
+
+This repo doesn't try to be a static method-list dump (those go stale, as above) — it's what a snapshot alone doesn't give you: **things you only find out by actually calling the API against a live instance** — auth gotchas that 400/401 you until you know the trick, permission-model surprises that aren't obvious from any spec, and a full worked example (Palworld) showing what a real create → inspect → manage → console workflow looks like end to end.
 
 ## Contents
 
@@ -46,10 +48,10 @@ curl -sk -X POST "https://your-amp-panel.example.com/API/<Module>/<Command>" \
 
 ### 3. Get the full, current method list for your AMP version
 
-Don't rely on a static markdown dump (things change between AMP releases) — either:
-- Browse `https://your-amp-panel.example.com/API` directly in your browser, or
-- Pull the auto-updated spec from [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi) (`APISpec.json` / `FriendlySpec.txt`), or
-- Call `POST /API/Core/GetAPISpec` yourself **with a valid authenticated session** — called anonymously it only returns a ~10-method stub (login/2FA/module-info); called authenticated it returns the full surface scoped to your session's role.
+Don't rely on a static markdown dump (things change between AMP releases, and third-party mirrors can go stale — see the p0t4t0sandwich/ampapi note above). In order of freshness:
+- Call `POST /API/Core/GetAPISpec` yourself **with a valid authenticated session** — called anonymously it only returns a ~10-method stub (login/2FA/module-info); called authenticated it returns the full surface scoped to your session's role, guaranteed to match your exact running AMP version.
+- Browse `https://your-amp-panel.example.com/API` directly in your browser (same guarantee, human-readable).
+- [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)'s `APISpec.json`/`FriendlySpec.txt` — useful for the module-inheritance mapping, but check its last-commit date before trusting the spec itself as current.
 
 ## How the notes in this repo were built
 

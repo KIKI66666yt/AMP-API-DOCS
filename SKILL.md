@@ -15,13 +15,17 @@ because that in-panel browser alone doesn't tell you the practical stuff:
 auth quirks, permission-model surprises, and worked end-to-end examples.
 
 **For the full up-to-date method list**, don't rely on a static snapshot —
-pull it live (see "Discovering the full API surface" below), or use the
-community-maintained, CI-refreshed reference at
-[p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi), which also
-documents which plugin modules each instance type (GenericModule, Minecraft,
-Rust, srcds, FiveM, ADS) inherits. Every AMP panel also serves its own
-interactive docs browser at `https://<panel-host>/API` — check that first for
-the exact version installed.
+pull it live (see "Discovering the full API surface" below). A community
+project, [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi),
+also documents which plugin modules each instance type (GenericModule,
+Minecraft, Rust, srcds, FiveM, ADS) inherits — useful for that mapping, but
+**check its last-commit date before trusting its `APISpec.json`/
+`FriendlySpec.txt` as current**: as of this writing it's pinned to an AMP
+version several releases behind current, and its auto-refresh CI workflow
+has its trigger disabled despite the README implying it's still active.
+Every AMP panel also serves its own interactive docs browser at
+`https://<panel-host>/API` — check that first, it always matches the exact
+version installed.
 
 ## When to use this skill
 
@@ -203,7 +207,8 @@ call expects, so you rarely need to guess.
 
 ## References
 
-- Community-maintained, auto-updated full spec + module inheritance map:
+- Community module-inheritance map (⚠️ check last-commit date — has gone
+  stale before, don't trust the bundled spec as current without verifying):
   https://github.com/p0t4t0sandwich/ampapi
 - Gotchas + worked example (source for this skill):
   https://github.com/KIKI66666yt/AMP-API-DOCS
