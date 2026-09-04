@@ -6,10 +6,13 @@ description: Automate CubeCoders AMP game server panels via its undocumented JSO
 # AMP (Application Management Panel) API — agent skill
 
 CubeCoders AMP (used to manage Minecraft/Palworld/Rust/etc. game servers) has
-no first-party public API docs, but the web panel is a thin client over a
-real JSON-RPC-style HTTP API at `/API/<Module>/<Command>`. This skill gives
-an AI agent everything needed to drive it directly: auth flow, the most
-useful calls, and hard-won gotchas that aren't obvious from the spec alone.
+no *published/external* API docs — but every AMP install serves its own
+built-in interactive docs browser at `https://<panel-host>/API` (the "AMP API
+Browser"), and the panel itself is a thin client over a real JSON-RPC-style
+HTTP API at `/API/<Module>/<Command>`. Check `/API` on your own instance
+first — it always matches your exact installed version. This skill exists
+because that in-panel browser alone doesn't tell you the practical stuff:
+auth quirks, permission-model surprises, and worked end-to-end examples.
 
 **For the full up-to-date method list**, don't rely on a static snapshot —
 pull it live (see "Discovering the full API surface" below), or use the
