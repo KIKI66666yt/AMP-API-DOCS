@@ -4,7 +4,7 @@ Field notes and worked examples for [CubeCoders AMP](https://cubecoders.com/AMP)
 
 ## This is a companion, not a duplicate
 
-**As of this writing, [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) in this repo are auto-regenerated daily by our own CI** (see Contents below), pulling live from a real AMP panel via a self-hosted GitHub Actions runner. We built this after noticing the previous go-to community reference had drifted stale.
+**As of this writing, [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) in this repo are auto-regenerated weekly by our own CI** (see Contents below), pulling live from a real AMP panel via a self-hosted GitHub Actions runner. We built this after noticing the previous go-to community reference had drifted stale.
 
 There's also a community project worth knowing about:
 
@@ -18,8 +18,8 @@ Beyond the spec itself, this repo also has what no static reference gives you: *
 
 ## Contents
 
-- [`API-REFERENCE.md`](./API-REFERENCE.md) — the full API surface: every module, method, parameter, return type, and required permission node. **Auto-regenerated daily** by [`.github/workflows/update-spec.yml`](./.github/workflows/update-spec.yml) via a self-hosted runner with network access to a live AMP panel — always current, not a stale snapshot.
-- [`APP-CATALOG.md`](./APP-CATALOG.md) — every app template AMP currently knows how to deploy. Also auto-regenerated daily by the same workflow.
+- [`API-REFERENCE.md`](./API-REFERENCE.md) — the full API surface: every module, method, parameter, return type, and required permission node. **Auto-regenerated weekly** by [`.github/workflows/update-spec.yml`](./.github/workflows/update-spec.yml) via a self-hosted runner with network access to a live AMP panel — always current, not a stale snapshot.
+- [`APP-CATALOG.md`](./APP-CATALOG.md) — every app template AMP currently knows how to deploy. Also auto-regenerated weekly by the same workflow.
 - [`SKILL.md`](./SKILL.md) — a self-contained, portable skill file for AI coding agents (Claude, Cursor, etc.) — drop it into your agent's skills directory and it'll know how to authenticate, call the API, avoid the gotchas below, and set up a least-privilege service account, without needing the rest of this repo loaded.
 - [`GOTCHAS.md`](./GOTCHAS.md) — confirmed-by-testing quirks: required headers, the deprecated-but-working `SESSIONID` auth pattern, per-instance permission nodes that aren't inherited from top-level role grants, and an open question around per-instance console/proxy auth (with a pointer to where CubeCoders' own community has discussed it).
 - [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app in the catalog, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
@@ -52,7 +52,7 @@ curl -sk -X POST "https://your-amp-panel.example.com/API/<Module>/<Command>" \
 
 ### 3. Get the full, current method list for your AMP version
 
-- This repo's [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) — auto-regenerated daily against a live panel (see workflow badge/note above).
+- This repo's [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) — auto-regenerated weekly against a live panel (see workflow badge/note above).
 - Call `POST /API/Core/GetAPISpec` yourself **with a valid authenticated session** — called anonymously it only returns a ~10-method stub (login/2FA/module-info); called authenticated it returns the full surface scoped to your session's role, guaranteed to match your exact running AMP version.
 - Browse `https://your-amp-panel.example.com/API` directly in your browser (same guarantee, human-readable).
 

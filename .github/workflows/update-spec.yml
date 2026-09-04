@@ -2,9 +2,9 @@ name: Update AMP API Spec
 
 on:
   schedule:
-    # Daily at 04:00 UTC. AMP releases aren't frequent enough to need
-    # tighter than this, and it keeps the self-hosted runner mostly idle.
-    - cron: "0 4 * * *"
+    # Weekly, Sunday 04:00 UTC. AMP releases aren't frequent enough to need
+    # daily checks, and it keeps the self-hosted runner essentially idle.
+    - cron: "0 4 * * 0"
   workflow_dispatch: {}  # allows manual trigger from the Actions tab
 
 permissions:
