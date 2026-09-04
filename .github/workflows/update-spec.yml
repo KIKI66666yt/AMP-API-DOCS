@@ -1,0 +1,48 @@
+name: Update AMP API Spec
+
+on:
+  schedule:
+    # Daily at 04:00 UTC. AMP releases aren't frequent enough to need
+    # tighter than this, and it keeps the self-hosted runner mostly idle.
+    - cron: "0 4 * * *"
+  workflow_dispatch: {}  # allows manual trigger from the Actions tab
+
+permissions:
+  contents: write  # needed to push the regenerated docs back to main
+
+jobs:
+  update-spec:
+    name: Regenerate API-REFERENCE.md and APP-CATALOG.md
+    runs-on: [self-hosted, amp-internal]
+    # This MUST run on a self-hosted runner with network access to the
+    # internal AMP panel — GitHub-hosted runners cannot reach it.
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Set up Python
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install -q --upgrade pip
+
+      - name: Fetch live spec and regenerate docs
+        env:
+          AMP_URL: ${{ secrets.AMP_URL }}
+          AMP_CI_USERNAME: ${{ secrets.AMP_CI_USERNAME }}
+          AMP_CI_PASSWORD: ${{ secrets.AMP_CI_PASSWORD }}
+        run: .venv/bin/python3 scripts/update_spec.py
+
+      - name: Commit changes if any
+        run: |
+          git config user.name "amp-spec-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add API-REFERENCE.md APP-CATALOG.md
+          if git diff --cached --quiet; then
+            echo "No changes to the spec — nothing to commit."
+          else
+            git commit -m "Auto-update API-REFERENCE.md and APP-CATALOG.md [skip ci]"
+            git push
+          fi
