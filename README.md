@@ -1,17 +1,21 @@
 # AMP-API-DOCS
 
-Unofficial, reverse-engineered API documentation for [CubeCoders AMP](https://cubecoders.com/AMP) (Application Management Panel) — the web panel used to manage Minecraft/Palworld/etc. game servers.
+Field notes and worked examples for [CubeCoders AMP](https://cubecoders.com/AMP)'s HTTP API — the real-world quirks, permission gotchas, and end-to-end workflows you hit once you go past "here's the method list."
 
-CubeCoders does **not** publish public API docs. The web panel itself is a thin client over a real JSON-RPC-style HTTP API at `/API/<Module>/<Command>`. This repo documents that API as reverse-engineered by capturing the panel's own network traffic and querying its self-describing spec endpoint.
+## This is a companion, not a duplicate
 
-**Verified against AMP 2.8.0.4** (September 2026). AMP is actively developed — CubeCoders can change this API at any time without notice. Treat everything here as a snapshot, not a stable contract.
+The definitive, auto-updated reference for AMP's raw API surface already exists and is actively maintained:
+
+**→ [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)** — CI-refreshed `APISpec.json` / `FriendlySpec.txt`, a `ModuleInheritance.json` mapping which plugin modules each instance type (GenericModule, Minecraft, Rust, srcds, FiveM, ADS) actually inherits, and client libraries in C#, Node, Python, Java, Go, and Rust.
+
+**Also worth knowing:** your own AMP panel serves built-in interactive API docs at `https://<your-panel>/API` (the "AMP API Browser") — no separate tooling needed to browse the live method list for your exact AMP version.
+
+This repo doesn't re-document the method list — go to the two links above for that. What's here instead is what neither of those give you: **things you only find out by actually calling the API against a live instance** — auth gotchas that 400/401 you until you know the trick, permission-model surprises that aren't obvious from the spec, and a full worked example (Palworld) showing what a real create → inspect → manage → console workflow looks like end to end.
 
 ## Contents
 
-- [`API-REFERENCE.md`](./API-REFERENCE.md) — the full 205-method API surface: every module, method, parameter (name/type/required-optional), return type, and required permission node. Auto-generated from AMP's own `Core/GetAPISpec` endpoint and lightly reformatted for readability.
-- [`GOTCHAS.md`](./GOTCHAS.md) — things that will bite you that aren't obvious from the spec alone: auth quirks, permission model surprises, and one genuinely unsolved problem (per-instance console access).
-- [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
-- [`APP-CATALOG.md`](./APP-CATALOG.md) — every app template AMP currently knows how to deploy (243 entries as of this writing): friendly name, module, and template Id, needed for scripting `CreateInstance` calls for any app.
+- [`GOTCHAS.md`](./GOTCHAS.md) — confirmed-by-testing quirks: required headers, the deprecated-but-working `SESSIONID` auth pattern, per-instance permission nodes that aren't inherited from top-level role grants, and an open question around per-instance console/proxy auth (with a pointer to where CubeCoders' own community has discussed it).
+- [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app in the catalog, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
 
 ## Quick start
 
@@ -35,34 +39,29 @@ curl -sk -X POST "https://your-amp-panel.example.com/API/<Module>/<Command>" \
   -d '{"SESSIONID":"<sessionID>", "<param1>": "..."}'
 ```
 
-**Two must-haves or every call fails:**
-- `Accept: application/json` header — omit it and you get a 400 `"Invalid accept header value"`. `Content-Type` alone is not enough.
-- A valid session — pass it as `Authorization: Bearer <sessionID>` (current/preferred) — the older pattern of also including `"SESSIONID":"<uuid>"` in the JSON body still works but is deprecated by AMP itself (it logs a warning telling you to move to the header).
+**Two must-haves or every call fails — see GOTCHAS.md for the full list:**
+- `Accept: application/json` header — omit it and you get a 400 `"Invalid accept header value"`.
+- A valid session passed as `Authorization: Bearer <sessionID>`.
 
-### 3. Most useful calls to start with
+### 3. Get the full, current method list for your AMP version
 
-| Call | What it does |
-|---|---|
-| `POST /API/Core/GetAPISpec` | Full self-describing spec of every method your session's role can see (send with a valid session to get the real list, not the ~10-method anonymous stub) |
-| `POST /API/ADSModule/GetInstances` | Full fleet status in one shot — every instance's name, running state, ports, live CPU/RAM/user metrics |
-| `POST /API/ADSModule/GetInstance` | Same, for one instance by GUID — includes full deployment/port config |
-| `POST /API/ADSModule/StartInstance` / `StopInstance` / `RestartInstance` | Body: `{"SESSIONID":..., "InstanceName":"<name>"}` — use the instance *name*, not its GUID |
+Don't rely on a static markdown dump (things change between AMP releases) — either:
+- Browse `https://your-amp-panel.example.com/API` directly in your browser, or
+- Pull the auto-updated spec from [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi) (`APISpec.json` / `FriendlySpec.txt`), or
+- Call `POST /API/Core/GetAPISpec` yourself **with a valid authenticated session** — called anonymously it only returns a ~10-method stub (login/2FA/module-info); called authenticated it returns the full surface scoped to your session's role.
 
-See `API-REFERENCE.md` for the complete list.
-
-## How this was built
+## How the notes in this repo were built
 
 1. Logged into the AMP panel in a real browser and captured its own XHR calls via:
    ```js
    performance.getEntriesByType('resource').filter(r => r.name.includes('API/')).map(r => r.name)
    ```
-   This reveals every `/API/<Module>/<Command>` the UI actually calls as you click around.
-2. Called `Core/GetAPISpec` **with an authenticated admin session** — this is the key trick. Called anonymously, AMP only returns ~10 stub methods (login, 2FA, module info). Called with a real session, it returns the full list scoped to that session's role — for an admin, that's the complete 205-method surface across 7 modules.
-3. Reformatted the raw JSON spec into readable markdown (module, method, params with types, return type, required permission node).
-4. Tested the most commonly-needed calls against a live instance to confirm real-world behavior, catching the gotchas documented in `GOTCHAS.md`.
+   Reveals every `/API/<Module>/<Command>` the UI actually calls as you click around.
+2. Called `Core/GetAPISpec` **with an authenticated admin session** to get the real method list, then cross-checked the calls that mattered against a live instance rather than trusting the spec alone — that's where the gotchas in `GOTCHAS.md` came from.
+3. Walked a real deployment (Palworld) through its full lifecycle to produce `PALWORLD-EXAMPLE.md`.
 
-If you're reverse-engineering a different undocumented panel, step 1 + step 2's pattern (find a self-describing spec/schema endpoint, then re-query it *authenticated*) generalizes well beyond AMP.
+If you're reverse-engineering a different undocumented panel, step 1 + "re-query a self-describing spec endpoint authenticated, not anonymous" generalizes well beyond AMP.
 
 ## Disclaimer
 
-This is unofficial, community-produced documentation, not affiliated with or endorsed by CubeCoders. Use at your own risk — always test against a non-production instance first, and keep credentials/tokens out of scripts and version control.
+Unofficial, community-produced notes — not affiliated with or endorsed by CubeCoders. AMP is actively developed and this API can change without notice; always test against a non-production instance first, and keep credentials/tokens out of scripts and version control.
