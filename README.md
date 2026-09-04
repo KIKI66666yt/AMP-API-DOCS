@@ -14,6 +14,7 @@ This repo doesn't re-document the method list — go to the two links above for 
 
 ## Contents
 
+- [`SKILL.md`](./SKILL.md) — a self-contained, portable skill file for AI coding agents (Claude, Cursor, etc.) — drop it into your agent's skills directory and it'll know how to authenticate, call the API, avoid the gotchas below, and set up a least-privilege service account, without needing the rest of this repo loaded.
 - [`GOTCHAS.md`](./GOTCHAS.md) — confirmed-by-testing quirks: required headers, the deprecated-but-working `SESSIONID` auth pattern, per-instance permission nodes that aren't inherited from top-level role grants, and an open question around per-instance console/proxy auth (with a pointer to where CubeCoders' own community has discussed it).
 - [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app in the catalog, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
 
