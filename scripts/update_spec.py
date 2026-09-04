@@ -115,8 +115,8 @@ def build_api_reference(spec: dict) -> str:
         "```\n"
         "POST /API/<Module>/<Command>\n"
         "Headers: Content-Type: application/json, Accept: application/json,\n"
-        "         Authorization: Bearer <sessionID>\n"
-        "Body: {\"SESSIONID\":\"<sessionID>\", <param1>:..., <param2>:...}\n"
+        "         Authorization: Bearer PLACEHOLDER_SESSION_ID\n"
+        "Body: {\"SESSIONID\":\"PLACEHOLDER_SESSION_ID\", <param1>:..., <param2>:...}\n"
         "```\n"
     )
     lines.append(

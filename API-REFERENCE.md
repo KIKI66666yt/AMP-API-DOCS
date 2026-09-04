@@ -850,8 +850,8 @@ Total documented: 205 methods.
 ```
 POST /API/<Module>/<Command>
 Headers: Content-Type: application/json, Accept: application/json,
-         Authorization: Bearer <sessionID>
-Body: {"SESSIONID":"<sessionID>", <param1>:..., <param2>:...}
+         Authorization: Bearer PLACEHOLDER_SESSION_ID
+Body: {"SESSIONID":"PLACEHOLDER_SESSION_ID", <param1>:..., <param2>:...}
 ```
 
 Complex-typed params (`IsComplexType: true`, e.g. `InstanceDatastore`) need a nested JSON object matching that type's shape — not discoverable from this spec dump alone. See GOTCHAS.md and PALWORLD-EXAMPLE.md for worked examples.
