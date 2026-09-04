@@ -4,18 +4,22 @@ Field notes and worked examples for [CubeCoders AMP](https://cubecoders.com/AMP)
 
 ## This is a companion, not a duplicate
 
-There's a community project for AMP's raw API surface:
+**As of this writing, [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) in this repo are auto-regenerated daily by our own CI** (see Contents below), pulling live from a real AMP panel via a self-hosted GitHub Actions runner. We built this after noticing the previous go-to community reference had drifted stale.
 
-**→ [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)** — `APISpec.json` / `FriendlySpec.txt`, a `ModuleInheritance.json` mapping which plugin modules each instance type (GenericModule, Minecraft, Rust, srcds, FiveM, ADS) actually inherits, and client libraries in C#, Node, Python, Java, Go, and Rust.
+There's also a community project worth knowing about:
 
-**⚠️ Stale as of this writing:** its last commit was May 31, 2025, pinned to AMP v2.6.2.0 — several versions behind current AMP releases (v2.8.0.4+). The repo's `update_spec.yml` GitHub Actions workflow that's supposed to auto-refresh the spec on a schedule has its trigger **commented out**, so despite the README's "automagically updates" claim, it isn't actually being kept current. Still useful for the `ModuleInheritance.json` mapping and the client libraries, but **don't trust its `APISpec.json`/`FriendlySpec.txt` as current** — pull the spec live instead (see step 3 below), which always matches your exact installed AMP version.
+**→ [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)** — a `ModuleInheritance.json` mapping which plugin modules each instance type (GenericModule, Minecraft, Rust, srcds, FiveM, ADS) actually inherits, plus client libraries in C#, Node, Python, Java, Go, and Rust. Genuinely useful for the module-inheritance mapping and the client libraries.
 
-**Also worth knowing:** your own AMP panel serves built-in interactive API docs at `https://<your-panel>/API` (the "AMP API Browser") — no separate tooling needed, and it's guaranteed to match your exact AMP version.
+**⚠️ Its own spec files are stale as of this writing:** last commit May 31, 2025, pinned to AMP v2.6.2.0 — several versions behind current AMP releases (v2.8.0.4+). Its `update_spec.yml` GitHub Actions workflow has its trigger commented out, so despite the README's "automagically updates" claim, it isn't actually being kept current. Use it for the module-inheritance map and libraries; use this repo's `API-REFERENCE.md`/`APP-CATALOG.md` (or your own panel's `/API` browser) for the current method list.
 
-This repo doesn't try to be a static method-list dump (those go stale, as above) — it's what a snapshot alone doesn't give you: **things you only find out by actually calling the API against a live instance** — auth gotchas that 400/401 you until you know the trick, permission-model surprises that aren't obvious from any spec, and a full worked example (Palworld) showing what a real create → inspect → manage → console workflow looks like end to end.
+**Also worth knowing:** your own AMP panel serves built-in interactive API docs at `https://<your-panel>/API` (the "AMP API Browser") — no separate tooling needed, guaranteed to match your exact AMP version.
+
+Beyond the spec itself, this repo also has what no static reference gives you: **things you only find out by actually calling the API against a live instance** — auth gotchas that 400/401 you until you know the trick, permission-model surprises that aren't obvious from any spec, and a full worked example (Palworld) showing what a real create → inspect → manage → console workflow looks like end to end.
 
 ## Contents
 
+- [`API-REFERENCE.md`](./API-REFERENCE.md) — the full API surface: every module, method, parameter, return type, and required permission node. **Auto-regenerated daily** by [`.github/workflows/update-spec.yml`](./.github/workflows/update-spec.yml) via a self-hosted runner with network access to a live AMP panel — always current, not a stale snapshot.
+- [`APP-CATALOG.md`](./APP-CATALOG.md) — every app template AMP currently knows how to deploy. Also auto-regenerated daily by the same workflow.
 - [`SKILL.md`](./SKILL.md) — a self-contained, portable skill file for AI coding agents (Claude, Cursor, etc.) — drop it into your agent's skills directory and it'll know how to authenticate, call the API, avoid the gotchas below, and set up a least-privilege service account, without needing the rest of this repo loaded.
 - [`GOTCHAS.md`](./GOTCHAS.md) — confirmed-by-testing quirks: required headers, the deprecated-but-working `SESSIONID` auth pattern, per-instance permission nodes that aren't inherited from top-level role grants, and an open question around per-instance console/proxy auth (with a pointer to where CubeCoders' own community has discussed it).
 - [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app in the catalog, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
@@ -48,10 +52,9 @@ curl -sk -X POST "https://your-amp-panel.example.com/API/<Module>/<Command>" \
 
 ### 3. Get the full, current method list for your AMP version
 
-Don't rely on a static markdown dump (things change between AMP releases, and third-party mirrors can go stale — see the p0t4t0sandwich/ampapi note above). In order of freshness:
+- This repo's [`API-REFERENCE.md`](./API-REFERENCE.md) and [`APP-CATALOG.md`](./APP-CATALOG.md) — auto-regenerated daily against a live panel (see workflow badge/note above).
 - Call `POST /API/Core/GetAPISpec` yourself **with a valid authenticated session** — called anonymously it only returns a ~10-method stub (login/2FA/module-info); called authenticated it returns the full surface scoped to your session's role, guaranteed to match your exact running AMP version.
 - Browse `https://your-amp-panel.example.com/API` directly in your browser (same guarantee, human-readable).
-- [p0t4t0sandwich/ampapi](https://github.com/p0t4t0sandwich/ampapi)'s `APISpec.json`/`FriendlySpec.txt` — useful for the module-inheritance mapping, but check its last-commit date before trusting the spec itself as current.
 
 ## How the notes in this repo were built
 

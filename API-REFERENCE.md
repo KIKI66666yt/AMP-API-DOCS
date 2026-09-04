@@ -1,0 +1,857 @@
+# AMP API Reference (auto-generated 2026-09-04)
+
+Generated from `Core/GetAPISpec` called with an authenticated session by a scheduled GitHub Actions workflow (`.github/workflows/update-spec.yml`) running on a self-hosted runner with network access to a live AMP panel. Regenerated automatically — always current as of the commit date above, unlike a manually maintained snapshot.
+The calling account here has minimal, read-only permissions — see params/permissions below for what each method needs; this doc reflects the FULL spec (permissions listed even if this particular account can't invoke a given method).
+
+## Core (97 methods)
+
+- **`Core.AcknowledgeAMPUpdate`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`Core.ActivateAMPLicence`**
+  - Params: `LicenceKey`:String (required), `QueryOnly`:Boolean (optional)
+  - Returns: `ActionResult<JObject>`
+  - Permissions: `Core.Special.QueryLicenceInformation`, `Core.Special.ActivateAMP`
+- **`Core.AddEventTrigger`**
+  - Params: `triggerId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.CreateTrigger`
+- **`Core.AddIntervalTrigger`**
+  - Params: `months`:Int32[] (required), `days`:Int32[] (required), `hours`:Int32[] (required), `minutes`:Int32[] (required), `daysOfMonth`:Int32[] (required), `description`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.CreateTrigger`
+- **`Core.AddTask`**
+  - Params: `TriggerID`:Guid (required), `MethodID`:String (required), `ParameterMapping`:Dictionary<String, String> (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.CreateTask`
+- **`Core.AsyncTest`** — DEV: Async test method
+  - Params: (no params)
+  - Returns: `String`
+  - Permissions: `Core.Special.UseDevMethods`
+- **`Core.CancelTask`**
+  - Params: `TaskId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.ChangeTaskOrder`**
+  - Params: `TriggerID`:Guid (required), `TaskID`:Guid (required), `NewOrder`:Int32 (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.EditTask`
+- **`Core.ChangeUserPassword`** — For a user to change their own password, requires knowing the old password
+  - Params: `Username`:String (required), `OldPassword`:String (required), `NewPassword`:String (required), `TwoFactorPIN`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.ConfirmTwoFactorSetup`** — Completes two-factor setup by supplying a valid two factor code based on the secret provided by EnableTwoFactor
+  - Params: `Username`:String (required), `TwoFactorCode`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.ConvertUserToOIDC`**
+  - Params: `Username`:String (required), `OIDCSub`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateUserInfo`
+- **`Core.CreateRole`**
+  - Params: `Name`:String (required), `AsCommonRole`:Boolean (optional)
+  - Returns: `ActionResult<Guid>`
+  - Permissions: `Core.RoleManagement.CreateRole`
+- **`Core.CreateTestTask`** — DEV: Creates a non-ending task with 50% progress for testing purposes
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.Special.UseDevMethods`
+- **`Core.CreateUser`**
+  - Params: `Username`:String (required), `IsOIDCUser`:Boolean (optional), `OIDCSub`:String (optional)
+  - Returns: `ActionResult<Guid>`
+  - Permissions: `Core.UserManagement.CreateNewUser`
+- **`Core.CurrentSessionHasPermission`**
+  - Params: `PermissionNode`:String (required)
+  - Returns: `Boolean`
+  - Permissions: (none listed)
+- **`Core.DeleteInstanceUsers`**
+  - Params: `InstanceId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.DeleteUser`
+- **`Core.DeleteRole`**
+  - Params: `RoleId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.RoleManagement.DeleteRoles`
+- **`Core.DeleteTask`**
+  - Params: `TriggerID`:Guid (required), `TaskID`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.DeleteTask`
+- **`Core.DeleteTrigger`**
+  - Params: `TriggerID`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.DeleteTask`, `Core.Scheduler.DeleteTrigger`
+- **`Core.DeleteUser`**
+  - Params: `Username`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.DeleteUser`
+- **`Core.DisableTwoFactor`**
+  - Params: `Password`:String (required), `TwoFactorCode`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+- **`Core.DismissAllTasks`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.DismissTask`**
+  - Params: `TaskId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.EditIntervalTrigger`**
+  - Params: `Id`:Guid (required), `months`:Int32[] (required), `days`:Int32[] (required), `hours`:Int32[] (required), `minutes`:Int32[] (required), `daysOfMonth`:Int32[] (required), `description`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.EditTrigger`
+- **`Core.EditTask`**
+  - Params: `TriggerID`:Guid (required), `TaskID`:Guid (required), `ParameterMapping`:Dictionary<String, String> (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.EditTask`
+- **`Core.EnableTwoFactor`** — Sets up two-factor authentication for the given user. ConfirmTwoFactorSetup must be invoked to complete setup.
+  - Params: `Username`:String (required), `Password`:String (required)
+  - Returns: `ActionResult<TwoFactorSetupInfo>`
+  - Permissions: (none listed)
+- **`Core.EndUserSession`**
+  - Params: `Id`:Guid (required)
+  - Returns: `Void`
+  - Permissions: `Core.UserManagement.EndUserSessions`
+- **`Core.GetAMPRolePermissions`**
+  - Params: `RoleId`:Guid (required)
+  - Returns: `IEnumerable<String>`
+  - Permissions: `Core.RoleManagement.ViewRoles`
+- **`Core.GetAMPUserInfo`**
+  - Params: `Username`:String (required)
+  - Returns: `UserInfo`
+  - Permissions: `Core.UserManagement.ViewUserInfo`
+- **`Core.GetAMPUsersSummary`**
+  - Params: (no params)
+  - Returns: `IEnumerable<UserInfoSummary>`
+  - Permissions: `Core.UserManagement.ViewUserInfo`
+- **`Core.GetAPISpec`**
+  - Params: (no params)
+  - Returns: `Dictionary<String, Dictionary<String, JObject>>`
+  - Permissions: (none listed)
+- **`Core.GetActiveAMPSessions`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `Core.UserManagement.ViewActiveSessions`
+- **`Core.GetAllAMPUserInfo`**
+  - Params: (no params)
+  - Returns: `IEnumerable<UserInfo>`
+  - Permissions: `Core.UserManagement.ViewUserInfo`
+- **`Core.GetAuditLogEntries`**
+  - Params: `Before`:Nullable<DateTime> (required), `Count`:Int32 (required)
+  - Returns: `IEnumerable<IAuditLogEntry>`
+  - Permissions: `Core.AuditLog.ViewAuditLog`
+- **`Core.GetAuthenticationRequirements`**
+  - Params: `username`:String (required)
+  - Returns: `IEnumerable<AuthenticationRequirement>`
+  - Permissions: (none listed)
+- **`Core.GetConfig`**
+  - Params: `node`:String (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.GetConfigs`**
+  - Params: `nodes`:String[] (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`Core.GetDiagnosticsInfo`**
+  - Params: (no params)
+  - Returns: `Dictionary<String, String>`
+  - Permissions: `Core.Special.Diagnostics`
+- **`Core.GetModuleInfo`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.GetNewGuid`**
+  - Params: (no params)
+  - Returns: `Guid`
+  - Permissions: (none listed)
+- **`Core.GetOIDCLoginURL`**
+  - Params: `redirect_uri`:String (optional)
+  - Returns: `String`
+  - Permissions: (none listed)
+- **`Core.GetOIDCLogoutUrl`**
+  - Params: `redirect_uri`:String (optional)
+  - Returns: `String`
+  - Permissions: (none listed)
+- **`Core.GetPermissionsSpec`**
+  - Params: (no params)
+  - Returns: `IList<IPermissionsTreeNode>`
+  - Permissions: (none listed)
+- **`Core.GetPortSummaries`**
+  - Params: (no params)
+  - Returns: `IEnumerable<ListeningPortSummary>`
+  - Permissions: (none listed)
+- **`Core.GetProvisionSpec`**
+  - Params: (no params)
+  - Returns: `List<JObject>`
+  - Permissions: (none listed)
+- **`Core.GetRemoteLoginToken`**
+  - Params: `Description`:String (optional), `IsTemporary`:Boolean (optional)
+  - Returns: `String`
+  - Permissions: (none listed)
+- **`Core.GetRole`**
+  - Params: `RoleId`:Guid (required)
+  - Returns: `AuthRoleSummary`
+  - Permissions: `Core.RoleManagement.ViewRoles`
+- **`Core.GetRoleData`**
+  - Params: (no params)
+  - Returns: `IEnumerable<AuthRoleSummary>`
+  - Permissions: `Core.RoleManagement.ViewRoles`
+- **`Core.GetRoleIds`**
+  - Params: (no params)
+  - Returns: `IDictionary<Guid, String>`
+  - Permissions: `Core.RoleManagement.ViewRoles`
+- **`Core.GetScheduleData`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: `Core.Scheduler.ViewSchedule`
+- **`Core.GetSettingValues`**
+  - Params: `SettingNode`:String (required), `WithRefresh`:Boolean (optional)
+  - Returns: `IDictionary<String, String>`
+  - Permissions: (none listed)
+- **`Core.GetSettingsSpec`**
+  - Params: (no params)
+  - Returns: `Dictionary<String, IEnumerable<JObject>>`
+  - Permissions: (none listed)
+- **`Core.GetStatus`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.GetStructuredDiagnostics`**
+  - Params: (no params)
+  - Returns: `Dictionary<String, Object>`
+  - Permissions: `Core.Special.Diagnostics`
+- **`Core.GetTasks`**
+  - Params: (no params)
+  - Returns: `IEnumerable<RunningTask>`
+  - Permissions: (none listed)
+- **`Core.GetTimeIntervalTrigger`**
+  - Params: `Id`:Guid (required)
+  - Returns: `JObject`
+  - Permissions: `Core.Scheduler.ViewSchedule`
+- **`Core.GetUpdateInfo`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: `Core.Special.UpdateAMPInstance`
+- **`Core.GetUpdates`** — Gets changes to the server status, in addition to any notifications or console output that have occurred since the last time GetUpdates() was called by the current session.
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.GetUserActionsSpec`**
+  - Params: (no params)
+  - Returns: `Object`
+  - Permissions: (none listed)
+- **`Core.GetUserInfo`** — Provides information about a given in-application user (as opposed to AMP system users)
+  - Params: `UID`:String (required)
+  - Returns: `SimpleUser`
+  - Permissions: (none listed)
+- **`Core.GetUserList`** — Returns a list of in-application users
+  - Params: (no params)
+  - Returns: `Dictionary<String, String>`
+  - Permissions: (none listed)
+- **`Core.GetWebauthnChallenge`**
+  - Params: (no params)
+  - Returns: `ActionResult<String>`
+  - Permissions: (none listed)
+- **`Core.GetWebauthnCredentialIDs`**
+  - Params: `username`:String (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.GetWebauthnCredentialSummaries`**
+  - Params: (no params)
+  - Returns: `IEnumerable<WebauthnCredentialSummary>`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+- **`Core.Kill`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.AppManagement.StopApplication`
+- **`Core.Login`**
+  - Params: `username`:String (required), `password`:String (required), `token`:String (required), `rememberMe`:Boolean (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.Logout`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`Core.OIDCLogin`**
+  - Params: `code`:String (required), `state`:String (required), `redirect_uri`:String (required), `serverId`:Nullable<Guid> (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`Core.RefreshSettingValueList`**
+  - Params: `Node`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.RefreshSettingsSourceCache`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`Core.RenameRole`**
+  - Params: `RoleId`:Guid (required), `NewName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.RoleManagement.EditRoleInfo`
+- **`Core.ResetUserPassword`** — For administrative users to alter the password of another user
+  - Params: `Username`:String (required), `NewPassword`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.ResetUserPassword`
+- **`Core.Restart`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: `Core.AppManagement.RestartApplication`
+- **`Core.RestartAMP`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.Special.RestartAMP`
+- **`Core.Resume`** — Allows the service to be re-started after previously being suspended.
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`Core.RevertUserFromOIDC`**
+  - Params: `Username`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateUserInfo`
+- **`Core.RevokeWebauthnCredential`**
+  - Params: `ID`:Int32 (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+- **`Core.RunEventTriggerImmediately`**
+  - Params: `triggerId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.CreateTrigger`
+- **`Core.RunSecurityCheck`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `Core.Special.RunSecurityCheck`
+- **`Core.SendConsoleMessage`**
+  - Params: `message`:String (required)
+  - Returns: `Void`
+  - Permissions: `Core.AppManagement.SendConsoleInput`
+- **`Core.SetAMPRolePermission`**
+  - Params: `RoleId`:Guid (required), `PermissionNode`:String (required), `Enabled`:Nullable<Boolean> (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.RoleManagement.EditRolePermissions`
+- **`Core.SetAMPUserRoleMembership`**
+  - Params: `UserId`:Guid (required), `RoleId`:Guid (required), `IsMember`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.ChangeRoleMembership`
+- **`Core.SetConfig`**
+  - Params: `node`:String (required), `value`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`Core.SetConfigs`**
+  - Params: `data`:Dictionary<String, String> (required)
+  - Returns: `Boolean`
+  - Permissions: (none listed)
+- **`Core.SetTriggerEnabled`**
+  - Params: `Id`:Guid (required), `Enabled`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.Scheduler.EditTrigger`
+- **`Core.Sleep`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: `Core.AppManagement.StopApplication`
+- **`Core.Start`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: `Core.AppManagement.StartApplication`
+- **`Core.Stop`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.AppManagement.StopApplication`
+- **`Core.Suspend`** — Prevents the current instance from being started, and stops it if it's currently running.
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`Core.UpdateAMPInstance`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.Special.UpdateAMPInstance`
+- **`Core.UpdateAccountInfo`**
+  - Params: `EmailAddress`:String (required), `TwoFactorPIN`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+- **`Core.UpdateApplication`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: `Core.AppManagement.UpdateApplication`
+- **`Core.UpdateOIDCSub`**
+  - Params: `Username`:String (required), `OIDCSub`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateUserInfo`
+- **`Core.UpdatePublicKey`**
+  - Params: `PubKey`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+- **`Core.UpdateUserInfo`**
+  - Params: `Username`:String (required), `Disabled`:Boolean (required), `PasswordExpires`:Boolean (required), `CannotChangePassword`:Boolean (required), `MustChangePassword`:Boolean (required), `EmailAddress`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateUserInfo`
+- **`Core.UpgradeAMP`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `Core.Special.UpgradeAMP`
+- **`Core.WebauthnRegister`**
+  - Params: `attestationObject`:String (required), `clientDataJSON`:String (required), `description`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `Core.UserManagement.UpdateOwnAccount`
+
+## ADSModule (68 methods)
+
+- **`ADSModule.AddDatastore`**
+  - Params: `newDatastore`:InstanceDatastore (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.ApplyInstanceConfiguration`**
+  - Params: `InstanceID`:Guid (required), `Args`:Dictionary<String, String> (required), `RebuildConfiguration`:Boolean (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.ApplyTemplate`** — Overlays an existing template on an existing instance. Used to perform package reconfigurations. Do not use this to 'transform' an existing application into another. The instance should be deleted and re-created in that situation.
+  - Params: `InstanceID`:Guid (required), `TemplateID`:Int32 (required), `NewFriendlyName`:String (optional), `Secret`:String (optional), `RestartIfPreviouslyRunning`:Boolean (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.AttachADS`**
+  - Params: `Friendly`:String (required), `IsHTTPS`:Boolean (required), `Host`:String (required), `Port`:Int32 (required), `InstanceID`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.AttachADSWithPairingCode`**
+  - Params: `PairingCode`:String (required), `Friendly`:String (required), `IsHTTPS`:Boolean (required), `Host`:String (required), `Port`:Int32 (required), `InstanceID`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.CancelPairing`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.CloneInstance`**
+  - Params: `SourceInstanceId`:Guid (required), `TargetADSInstance`:Guid (required), `NewFriendlyName`:String (optional), `PostCreate`:PostCreateAppActions (optional), `StartOnBoot`:Boolean (optional), `TargetDatastore`:Int32 (optional), `LicenceKey`:String (optional), `NewInstanceUsername`:String (optional), `NewInstancePassword`:String (optional), `DeleteSource`:Boolean (optional), `CopyFiles`:Boolean (optional)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.CloneTemplate`**
+  - Params: `Id`:Int32 (required), `NewName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.TemplateManagement.ManageTemplates`
+- **`ADSModule.CreateDeploymentTemplate`**
+  - Params: `Name`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.TemplateManagement.ManageTemplates`
+- **`ADSModule.CreateInstance`**
+  - Params: `TargetADSInstance`:Guid (required), `NewInstanceId`:Guid (required), `Module`:String (required), `InstanceName`:String (required), `FriendlyName`:String (required), `IPBinding`:String (required), `PortNumber`:Int32 (required), `AdminUsername`:String (required), `AdminPassword`:String (required), `ProvisionSettings`:Dictionary<String, String> (required), `AutoConfigure`:Boolean (optional) — When enabled, all settings other than the Module, Target and FriendlyName are ignored and replaced with automatically generated values., `PostCreate`:PostCreateAppActions (optional), `StartOnBoot`:Boolean (optional), `DisplayImageSource`:String (optional), `TargetDatastore`:Int32 (optional), `Group`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.CreateInstanceFromSpec`**
+  - Params: `SpecId`:Guid (required), `TargetADSInstance`:Guid (required), `FriendlyName`:String (required), `PostCreate`:PostCreateAppActions (optional), `StartOnBoot`:Boolean (optional), `TargetDatastore`:Int32 (optional), `Group`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.CreateLocalInstance`**
+  - Params: `Instance`:LocalAMPInstance (required), `PostCreate`:PostCreateAppActions (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.DeleteDatastore`**
+  - Params: `id`:Int32 (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.DeleteDeploymentTemplate`**
+  - Params: `Id`:Int32 (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.TemplateManagement.ManageTemplates`
+- **`ADSModule.DeleteInstance`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.InstanceManagement.DeleteInstances`
+- **`ADSModule.DeleteInstanceUsers`**
+  - Params: `InstanceId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.DeleteInstances`
+- **`ADSModule.DeployTemplate`**
+  - Params: `TemplateID`:Int32 (required) — The ID of the template to be deployed, as per the Template Management UI in AMP itself., `NewUsername`:String (optional) — If specified, AMP will create a new user with this name for this instance. Must be unique. If this user already exists, this will be ignored but the new instance will be assigned to this user., `NewPassword`:String (optional) — If 'NewUsername' is specified and the user doesn't already exist, the password that will be assigned to this user., `NewEmail`:String (optional) — If 'NewUsername' is specified and the user doesn't already exist, the email address that will be assigned to this user., `RequiredTags`:List<String> (optional) — If specified, AMP will only deploy this template to targets that have every single 'tag' specified in their target configuration. You can adjust this via the controller by clicking 'Edit' on the target settings., `Tag`:String (optional) — Unrelated to RequiredTags. This is to uniquely identify this instance to your own systems. It may be something like an order ID or service ID so you can find the associated instance again at a later time. If 'UseTagAsInstanceName' is enabled, then this will also be used as the instance name for the created instance - but it must be unique., `FriendlyName`:String (optional) — A friendly name for this instance. If left blank, AMP will generate one for you., `Secret`:String (optional) — Must be a non-empty strong in order to get a callback on deployment state change. This secret will be passed back to you in the callback so you can verify the request., `PostCreate`:PostCreateAppActions (optional) — 0: Do Nothing, 1: Update Once, 2: Update Always, 3: Update and Start Once, 4: Update and Start Always, 5. Start Always, `ExtraProvisionSettings`:Dictionary<String, String> (optional) — A dictionary of setting nodes and values to create the new instance with. Identical in function to the provisioning arguments in the template itself.
+  - Returns: `RunningTask`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.DetachTarget`**
+  - Params: `Id`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.RemoveRemoteADSInstance`
+- **`ADSModule.ExtractEverywhere`**
+  - Params: `SourceArchive`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`ADSModule.GetApplicationEndpoints`**
+  - Params: `instanceId`:Guid (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetDatastore`**
+  - Params: `id`:Int32 (required)
+  - Returns: `JObject`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.GetDatastoreInstances`**
+  - Params: `datastoreId`:Int32 (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.GetDatastores`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.GetDeploymentTemplates`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `ADS.TemplateManagement.ManageTemplates`
+- **`ADSModule.GetGroup`**
+  - Params: `GroupId`:Guid (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`ADSModule.GetInstance`**
+  - Params: `InstanceId`:Guid (required)
+  - Returns: `JObject`
+  - Permissions: (none listed)
+- **`ADSModule.GetInstanceLiveSettings`**
+  - Params: `instanceId`:Guid (required)
+  - Returns: `Dictionary<String, String>`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.GetInstanceNetworkInfo`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.GetInstanceStatuses`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetInstances`**
+  - Params: `ForceIncludeSelf`:Boolean (optional)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetLocalInstances`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetProvisionArguments`**
+  - Params: `ModuleName`:String (required)
+  - Returns: `IEnumerable<ProvisionSettingInfo>`
+  - Permissions: (none listed)
+- **`ADSModule.GetProvisionFitness`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.GetSupportedAppSummaries`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetSupportedApplications`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: (none listed)
+- **`ADSModule.GetTargetInfo`**
+  - Params: (no params)
+  - Returns: `JObject`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.GetTargetPairingCode`**
+  - Params: (no params)
+  - Returns: `ActionResult<String>`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.HandoutInstanceConfigs`**
+  - Params: `ForModule`:String (required), `SettingNode`:String (required), `Values`:List<String> (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.ManageInstance`**
+  - Params: `InstanceId`:Guid (required)
+  - Returns: `ActionResult<String>`
+  - Permissions: (none listed)
+- **`ADSModule.ModifyCustomFirewallRule`**
+  - Params: `instanceId`:Guid (required), `PortNumber`:Int32 (required), `Range`:Int32 (required), `Protocol`:PortProtocol (required), `Description`:String (required), `Open`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.MoveInstanceDatastore`**
+  - Params: `instanceId`:Guid (required), `datastoreId`:Int32 (required)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.PrepareFileTransfer`**
+  - Params: `instanceId`:Guid (required)
+  - Returns: `ActionResult<String>`
+  - Permissions: `ADS.InstanceManagement.CreateInstance`
+- **`ADSModule.ReactivateInstance`**
+  - Params: `instanceId`:Guid (required)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.ReactivateLocalInstances`**
+  - Params: (no params)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.RefreshAppCache`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `ADS.InstanceManagement.RefreshConfiguration`
+- **`ADSModule.RefreshGroup`**
+  - Params: `GroupId`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`ADSModule.RefreshInstanceConfig`**
+  - Params: `InstanceId`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.UpgradeInstances`
+- **`ADSModule.RefreshRemoteConfigStores`**
+  - Params: `force`:Boolean (optional)
+  - Returns: `Void`
+  - Permissions: `ADS.InstanceManagement.RefreshRemoteConfigStores`
+- **`ADSModule.RegisterTarget`**
+  - Params: `controllerUrl`:String (required), `myUrl`:String (required), `username`:String (required), `password`:String (required), `twoFactorToken`:String (required), `friendlyName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.RegisterTargetWithCode`**
+  - Params: `controllerUrl`:String (required), `myUrl`:String (required), `code`:String (required), `friendlyName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.AttachRemoteADSInstance`
+- **`ADSModule.RepairDatastore`**
+  - Params: `id`:Int32 (required)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.RequestDatastoreSizeCalculation`**
+  - Params: `datastoreId`:Int32 (required)
+  - Returns: `RunningTask`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.RestartInstance`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`ADSModule.Servers`**
+  - Params: `Data`:JObject (required), `RealIP`:IPAddress (required)
+  - Returns: `JSONRawResponse`
+  - Permissions: (none listed)
+- **`ADSModule.SetInstanceConfig`**
+  - Params: `InstanceName`:String (required), `SettingNode`:String (required), `Value`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.SetInstanceNetworkInfo`**
+  - Params: `InstanceId`:Guid (required), `PortMappings`:Dictionary<String, Int32> (required), `ApplicationIP`:String (optional), `mustStop`:Boolean (optional), `AdvertisedAddress`:String (optional), `AdvertisedAddressIncludesPort`:Boolean (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.SetInstanceSuspended`**
+  - Params: `InstanceName`:String (required), `Suspended`:Boolean (required), `SuspendReason`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.SuspendInstances`
+- **`ADSModule.StartAllInstances`**
+  - Params: `TargetADSInstance`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.StartInstances`
+- **`ADSModule.StartInstance`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`ADSModule.StopAllInstances`**
+  - Params: `TargetADSInstance`:Guid (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.StopInstances`
+- **`ADSModule.StopInstance`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+- **`ADSModule.UpdateDatastore`**
+  - Params: `updatedDatastore`:InstanceDatastore (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.DatastoreManagement.ManageDatastores`
+- **`ADSModule.UpdateDeploymentTemplate`**
+  - Params: `templateToUpdate`:DeploymentTemplate (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.TemplateManagement.ManageTemplates`
+- **`ADSModule.UpdateInstanceInfo`**
+  - Params: `InstanceId`:String (required), `FriendlyName`:String (optional), `Description`:String (optional), `StartOnBoot`:Nullable<Boolean> (optional), `Suspended`:Nullable<Boolean> (optional), `ExcludeFromFirewall`:Nullable<Boolean> (optional), `RunInContainer`:Nullable<Boolean> (optional), `ContainerMemory`:Nullable<Int32> (optional), `ContainerSwap`:Nullable<Int32> (optional), `MemoryPolicy`:Nullable<ContainerMemoryPolicy> (optional), `ContainerMaxCPU`:Nullable<Single> (optional), `ContainerCPUSet`:String (optional), `ContainerImage`:String (optional), `WelcomeMessage`:String (optional), `DisplayGroup`:String (optional), `CustomMountBindings`:Dictionary<String, String> (optional), `ExtraContainerPackages`:List<String> (optional), `IsMultiIPAware`:Nullable<Boolean> (optional), `UseHostModeNetwork`:Nullable<Boolean> (optional), `SaveOnly`:Boolean (optional)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.Reconfigure`
+- **`ADSModule.UpdateTarget`**
+  - Params: `TargetID`:Guid (required)
+  - Returns: `Void`
+  - Permissions: (none listed)
+- **`ADSModule.UpdateTargetInfo`**
+  - Params: `Id`:Guid (required), `FriendlyName`:String (required), `Url`:Uri (required), `Description`:String (required), `Tags`:List<String> (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.EditRemoteTargets`
+- **`ADSModule.UpgradeAllInstances`**
+  - Params: `TargetADSInstance`:Guid (required), `RestartRunning`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `ADS.InstanceManagement.UpgradeInstances`
+- **`ADSModule.UpgradeInstance`**
+  - Params: `InstanceName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+
+## FileManagerPlugin (21 methods)
+
+- **`FileManagerPlugin.AppendFileChunk`**
+  - Params: `Filename`:String (required), `Data`:String (required), `Delete`:Boolean (required)
+  - Returns: `Void`
+  - Permissions: `FileManager.FileManager.UploadFiles`
+- **`FileManagerPlugin.CalculateFileMD5Sum`**
+  - Params: `FilePath`:String (required)
+  - Returns: `ActionResult<String>`
+  - Permissions: `FileManager.FileManager.DownloadFiles`
+- **`FileManagerPlugin.ChangeExclusion`**
+  - Params: `ModifyPath`:String (required), `AsDirectory`:Boolean (required), `Exclude`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.ChangeBackupExclusions`
+- **`FileManagerPlugin.CopyFile`**
+  - Params: `Origin`:String (required), `TargetDirectory`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.CopyFiles`
+- **`FileManagerPlugin.CreateArchive`**
+  - Params: `PathToArchive`:String (required), `OverwriteExisting`:Boolean (optional)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.CreateArchive`
+- **`FileManagerPlugin.CreateDirectory`** — Creates a new directory. The parent directory must already exist.
+  - Params: `NewPath`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.CreateDirectory`
+- **`FileManagerPlugin.DownloadFileFromURL`**
+  - Params: `Source`:Uri (required), `TargetDirectory`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.DownloadFromURL`
+- **`FileManagerPlugin.DownloadFolderAsZip`** — Download an entire folder as a zip archive
+  - Params: `DirectoryPath`:String (required)
+  - Returns: `ActionResult<String>`
+  - Permissions: `FileManager.FileManager.DownloadFiles`
+- **`FileManagerPlugin.Dummy`**
+  - Params: (no params)
+  - Returns: `Void`
+  - Permissions: `FileManager.FileManager.ConnectViaSFTP`
+- **`FileManagerPlugin.EmptyTrash`** — Empties a trash bin
+  - Params: `TrashDirectoryName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.EmptyTrash`
+- **`FileManagerPlugin.ExtractArchive`**
+  - Params: `ArchivePath`:String (required), `DestinationPath`:String (optional)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.ExtractArchive`
+- **`FileManagerPlugin.GetDirectoryListing`**
+  - Params: `Dir`:String (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `FileManager.FileManager.BrowseFiles`
+- **`FileManagerPlugin.GetFileChunk`**
+  - Params: `Filename`:String (required), `Position`:Int64 (required), `Length`:Int32 (required)
+  - Returns: `JObject`
+  - Permissions: `FileManager.FileManager.DownloadFiles`
+- **`FileManagerPlugin.ReadFileChunk`**
+  - Params: `Filename`:String (required), `Offset`:Int64 (required), `ChunkSize`:Int64 (optional)
+  - Returns: `ActionResult<String>`
+  - Permissions: `FileManager.FileManager.DownloadFiles`
+- **`FileManagerPlugin.ReleaseFileUploadLock`**
+  - Params: `Filename`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.UploadFiles`
+- **`FileManagerPlugin.RenameDirectory`** — Renames a directory
+  - Params: `oldDirectory`:String (required) — The full path to the old directory, `NewDirectoryName`:String (required) — The name component of the new directory (not the full path)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.RenameDirectories`
+- **`FileManagerPlugin.RenameFile`**
+  - Params: `Filename`:String (required), `NewFilename`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.RenameFiles`
+- **`FileManagerPlugin.TrashDirectory`** — Moves a directory to trash, files must be trashed before they can be deleted.
+  - Params: `DirectoryName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.TrashDirectories`
+- **`FileManagerPlugin.TrashFile`** — Moves a file to trash, files must be trashed before they can be deleted.
+  - Params: `Filename`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.TrashFiles`
+- **`FileManagerPlugin.UploadFolder`** — Upload an entire folder as a set of files with relative paths
+  - Params: `TargetDirectory`:String (required), `Files`:List<FolderUploadFile> (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.UploadFiles`
+- **`FileManagerPlugin.WriteFileChunk`**
+  - Params: `Filename`:String (required), `Data`:String (required), `Offset`:Int64 (required), `FinalChunk`:Boolean (required)
+  - Returns: `ActionResult`
+  - Permissions: `FileManager.FileManager.UploadFiles`
+
+## StorePlugin (17 methods)
+
+- **`StorePlugin.ClearStoreData`**
+  - Params: `StoreName`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.GetAvailableStores`**
+  - Params: (no params)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.GetStoreCategories`**
+  - Params: `StoreName`:String (required)
+  - Returns: `IEnumerable<JObject>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.GetStoreEntriesForCategory`**
+  - Params: `StoreName`:String (required), `CategoryId`:String (required), `CategoryType`:String (optional), `page`:Int32 (optional), `pageSize`:Int32 (optional)
+  - Returns: `PagedRecords<JObject>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.GetStoreEntry`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required)
+  - Returns: `JObject`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.GetStoreFilterKeys`**
+  - Params: `StoreName`:String (required)
+  - Returns: `IEnumerable<String>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.GetStoreFilterSelections`**
+  - Params: `StoreName`:String (required)
+  - Returns: `Dictionary<String, String>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.GetStoreFilterValues`**
+  - Params: `StoreName`:String (required), `FilterKey`:String (required)
+  - Returns: `IEnumerable<String>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.InstallStoreEntry`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required)
+  - Returns: `RunningTask`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.SearchStore`**
+  - Params: `StoreName`:String (required), `SearchQuery`:String (required), `page`:Int32 (optional), `pageSize`:Int32 (optional)
+  - Returns: `PagedRecords<JObject>`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.SetStoreEntryAutoUpdate`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required), `AutoUpdate`:Boolean (required)
+  - Returns: `Task`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.SetStoreEntryDisabled`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required), `Disabled`:Boolean (required)
+  - Returns: `Task`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.SetStoreFilterSelections`**
+  - Params: `StoreName`:String (required), `Filters`:Dictionary<String, String> (required)
+  - Returns: `Void`
+  - Permissions: `Store.Store.BrowseStores`
+- **`StorePlugin.UninstallStoreEntry`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required)
+  - Returns: `ActionResult`
+  - Permissions: `Store.Store.InstallStoreEntries`
+- **`StorePlugin.UpdateEverything`**
+  - Params: (no params)
+  - Returns: `RunningTask`
+  - Permissions: `Store.Store.UpdateStoreEntries`
+- **`StorePlugin.UpdateStoreEntries`**
+  - Params: `StoreName`:String (required)
+  - Returns: `RunningTask`
+  - Permissions: `Store.Store.UpdateStoreEntries`
+- **`StorePlugin.UpdateStoreEntry`**
+  - Params: `StoreName`:String (required), `EntryId`:String (required)
+  - Returns: `RunningTask`
+  - Permissions: `Store.Store.UpdateStoreEntries`
+
+## EmailSenderPlugin (1 methods)
+
+- **`EmailSenderPlugin.TestSMTPSettings`**
+  - Params: (no params)
+  - Returns: `ActionResult`
+  - Permissions: (none listed)
+
+## WebhookPlugin (1 methods)
+
+- **`WebhookPlugin.TriggerWebhookEvent`**
+  - Params: `payload`:String (optional), `data`:String (optional)
+  - Returns: `Void`
+  - Permissions: (none listed)
+
+
+Total documented: 205 methods.
+
+
+## Call shape reminder
+
+```
+POST /API/<Module>/<Command>
+Headers: Content-Type: application/json, Accept: application/json,
+         Authorization: Bearer <sessionID>
+Body: {"SESSIONID":"<sessionID>", <param1>:..., <param2>:...}
+```
+
+Complex-typed params (`IsComplexType: true`, e.g. `InstanceDatastore`) need a nested JSON object matching that type's shape — not discoverable from this spec dump alone. See GOTCHAS.md and PALWORLD-EXAMPLE.md for worked examples.
