@@ -27,7 +27,7 @@ The AMP web UI clearly reaches a live per-instance console (you can see real-tim
 
 ## Misc
 
-- `ADSModule.GetSupportedApplications()` returns **every app template AMP knows about** (~240+ at time of writing) as one large JSON array — don't dump it raw, filter client-side by `FriendlyName`. Each entry's `Id` field is the stable per-app template identifier, matching the `<Module>.Meta.AppConfigId` field you'll see in `DeploymentArgs` on an already-deployed instance of that app.
+- `ADSModule.GetSupportedApplications()` returns **every app template AMP knows about** (243 at time of writing) as one large JSON array (~7MB) — don't dump it raw, filter client-side by `FriendlyName`. Each entry's `Id` field is the stable per-app template identifier, matching the `<Module>.Meta.AppConfigId` field you'll see in `DeploymentArgs` on an already-deployed instance of that app. See [`APP-CATALOG.md`](./APP-CATALOG.md) for the full name/module/Id table.
 - `ADSModule.GetDeploymentTemplates()` returns your **saved custom templates**, not the built-in app catalog — expect `[]` on a fresh install with no custom templates saved.
 - `ADSModule.CreateInstance(...)` is the scriptable equivalent of the "Create Instance" wizard in the UI. Before calling it, fetch `ADSModule.GetProvisionArguments(ModuleName)` for your target app to get the exact provisioning field names/values it expects, and `GetSupportedApplications()` / `GetDeploymentTemplates()` to confirm the right `Module` string.
 - `Core.Restart()` / `Core.RestartAMP()` restart the **AMP controller app itself**, not any game instance — don't confuse with `ADSModule.RestartInstance(InstanceName)`, which restarts one game server.

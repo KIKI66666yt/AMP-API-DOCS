@@ -11,6 +11,7 @@ CubeCoders does **not** publish public API docs. The web panel itself is a thin 
 - [`API-REFERENCE.md`](./API-REFERENCE.md) — the full 205-method API surface: every module, method, parameter (name/type/required-optional), return type, and required permission node. Auto-generated from AMP's own `Core/GetAPISpec` endpoint and lightly reformatted for readability.
 - [`GOTCHAS.md`](./GOTCHAS.md) — things that will bite you that aren't obvious from the spec alone: auth quirks, permission model surprises, and one genuinely unsolved problem (per-instance console access).
 - [`PALWORLD-EXAMPLE.md`](./PALWORLD-EXAMPLE.md) — a worked, end-to-end example against a real game server: find the app, inspect a deployed instance, start/stop/restart, send console commands, and script a brand-new instance from scratch. Generalizes to any `GenericModule`-based game, not just Palworld.
+- [`APP-CATALOG.md`](./APP-CATALOG.md) — every app template AMP currently knows how to deploy (243 entries as of this writing): friendly name, module, and template Id, needed for scripting `CreateInstance` calls for any app.
 
 ## Quick start
 
