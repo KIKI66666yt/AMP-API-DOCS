@@ -1,4 +1,4 @@
-# AMP App Catalog — all supported application templates (auto-generated 2026-09-13)
+# AMP App Catalog — all supported application templates (auto-generated 2026-09-20)
 
 AMP's `ADSModule.GetSupportedApplications` call returns every app template the panel knows how to deploy — 243 entries as of this commit. Each entry's `Id` is the stable per-app template identifier: pass it as the `AppConfigId` provisioning setting when calling `ADSModule.CreateInstance` (see PALWORLD-EXAMPLE.md for a full worked example), and it reappears as `DeploymentArgs["<ModuleName>.Meta.AppConfigId"]` on any instance already deployed from this template.
 
