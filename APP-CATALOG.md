@@ -1,14 +1,15 @@
-# AMP App Catalog — all supported application templates (auto-generated 2026-09-20)
+# AMP App Catalog — all supported application templates (auto-generated 2026-09-27)
 
-AMP's `ADSModule.GetSupportedApplications` call returns every app template the panel knows how to deploy — 243 entries as of this commit. Each entry's `Id` is the stable per-app template identifier: pass it as the `AppConfigId` provisioning setting when calling `ADSModule.CreateInstance` (see PALWORLD-EXAMPLE.md for a full worked example), and it reappears as `DeploymentArgs["<ModuleName>.Meta.AppConfigId"]` on any instance already deployed from this template.
+AMP's `ADSModule.GetSupportedApplications` call returns every app template the panel knows how to deploy — 244 entries as of this commit. Each entry's `Id` is the stable per-app template identifier: pass it as the `AppConfigId` provisioning setting when calling `ADSModule.CreateInstance` (see PALWORLD-EXAMPLE.md for a full worked example), and it reappears as `DeploymentArgs["<ModuleName>.Meta.AppConfigId"]` on any instance already deployed from this template.
 
 Regenerated automatically by `.github/workflows/update-spec.yml` on a schedule — always reflects the live catalog, not a stale snapshot.
 
-**Total: 243 app templates.**
+**Total: 244 app templates.**
 
 | Friendly Name | Module | Id |
 |---|---|---|
 | Abiotic Factor | `GenericModule` | `2cd58de5-88a4-49f8-a71a-b09d08d1fd5e` |
+| Alchemy Factory | `GenericModule` | `1abd95d4-bd7e-43b2-a0ca-2e94d00529ef` |
 | American Truck Simulator | `GenericModule` | `00732a94-88f5-43b8-b211-458ccb83062e` |
 | ANEURISM IV | `GenericModule` | `0be856ec-0190-4186-92e1-7f0d20504662` |
 | Archean | `GenericModule` | `d10ddf53-3b4b-496f-9e85-1f6d079c5021` |

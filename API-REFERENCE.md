@@ -1,4 +1,4 @@
-# AMP API Reference (auto-generated 2026-09-20)
+# AMP API Reference (auto-generated 2026-09-27)
 
 Generated from `Core/GetAPISpec` called with an authenticated session by a scheduled GitHub Actions workflow (`.github/workflows/update-spec.yml`) running on a self-hosted runner with network access to a live AMP panel. Regenerated automatically — always current as of the commit date above, unlike a manually maintained snapshot.
 The calling account here has minimal, read-only permissions — see params/permissions below for what each method needs; this doc reflects the FULL spec (permissions listed even if this particular account can't invoke a given method).
