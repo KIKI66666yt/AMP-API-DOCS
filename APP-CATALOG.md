@@ -1,10 +1,10 @@
-# AMP App Catalog — all supported application templates (auto-generated 2026-09-27)
+# AMP App Catalog — all supported application templates (auto-generated 2026-10-04)
 
-AMP's `ADSModule.GetSupportedApplications` call returns every app template the panel knows how to deploy — 244 entries as of this commit. Each entry's `Id` is the stable per-app template identifier: pass it as the `AppConfigId` provisioning setting when calling `ADSModule.CreateInstance` (see PALWORLD-EXAMPLE.md for a full worked example), and it reappears as `DeploymentArgs["<ModuleName>.Meta.AppConfigId"]` on any instance already deployed from this template.
+AMP's `ADSModule.GetSupportedApplications` call returns every app template the panel knows how to deploy — 245 entries as of this commit. Each entry's `Id` is the stable per-app template identifier: pass it as the `AppConfigId` provisioning setting when calling `ADSModule.CreateInstance` (see PALWORLD-EXAMPLE.md for a full worked example), and it reappears as `DeploymentArgs["<ModuleName>.Meta.AppConfigId"]` on any instance already deployed from this template.
 
 Regenerated automatically by `.github/workflows/update-spec.yml` on a schedule — always reflects the live catalog, not a stale snapshot.
 
-**Total: 244 app templates.**
+**Total: 245 app templates.**
 
 | Friendly Name | Module | Id |
 |---|---|---|
@@ -47,6 +47,7 @@ Regenerated automatically by `.github/workflows/update-spec.yml` on a schedule �
 | Colony Survival | `GenericModule` | `8c56d7d3-fb12-48ee-b124-7814df6a9b34` |
 | Conan Exiles (Legacy) | `GenericModule` | `33716b55-127d-43b1-a764-f9467ee5da1f` |
 | Conan Exiles Enhanced | `GenericModule` | `95ab603e-0f31-463c-8d1b-c9a5338a65a2` |
+| Contagion | `GenericModule` | `b1e29303-0c4f-4d32-9a3c-b2659e782d30` |
 | Core Keeper | `GenericModule` | `338b48a0-21ae-498e-864f-6b91e583f31e` |
 | Counter-Strike 1.6 | `GenericModule` | `081b373a-90d8-437b-ae32-0781f6eed658` |
 | Counter-Strike 2 | `GenericModule` | `3446bb16-65ea-45fc-993b-cac42f15bd2b` |
